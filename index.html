@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#7fcdf5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="راوینو">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>راوینو</title>
+<style>
+@font-face{font-family:Vazirmatn;src:url(fonts/vazirmatn.woff2) format("woff2");font-weight:100 900;font-display:swap}
+:root{--navy:#1b3a8c;--ink:#27406f;--mut:#5f7aa8;--blue:#2f8cff;--teal:#28b8ab;--org:#f28c45;--gold:#ffc857;--grn:#34c46e;--card:rgba(255,255,255,.88)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{font-family:Vazirmatn,Tahoma,sans-serif;color:var(--ink);min-height:100vh;padding-bottom:96px;
+ background:
+  radial-gradient(circle at 12% 8%,#fff9 0 60px,#fff0 62px),
+  radial-gradient(circle at 88% 22%,#fff8 0 80px,#fff0 82px),
+  radial-gradient(circle at 20% 60%,#fff7 0 90px,#fff0 92px),
+  linear-gradient(180deg,#8fd3f7 0%,#bfe6fb 38%,#eaf6ff 100%);
+ background-attachment:fixed}
+main{max-width:640px;margin:auto;padding:12px 14px}
+.top{display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top)) 14px 0;max-width:640px;margin:auto}
+.logo{flex:1;line-height:1}
+.logo b{display:block;font-size:34px;font-weight:900;color:var(--navy);letter-spacing:-1px;text-shadow:0 3px 0 #fff,0 0 12px #fff}
+.logo small{font-size:12px;font-weight:700;color:var(--mut);letter-spacing:1px;direction:ltr;display:block;text-align:right}
+.pill{background:#fff;border-radius:22px;padding:8px 14px;font-weight:800;font-size:15px;box-shadow:0 4px 12px #1b3a8c22;white-space:nowrap}
+.pill.star{color:#c97a00;background:#fff4cf}
+.datepill{background:#ffe9a6;color:var(--navy);border-radius:20px;padding:7px 14px;font-weight:800;font-size:13px;box-shadow:0 3px 10px #1b3a8c1f}
+.card{background:var(--card);backdrop-filter:blur(6px);border-radius:26px;padding:16px;margin-bottom:14px;box-shadow:0 8px 24px #1b3a8c1c;border:1.5px solid #fff}
+.card h2{margin:0 0 12px;font-size:17px;color:var(--navy);font-weight:900;display:flex;align-items:center;gap:8px}
+.tag{display:inline-block;background:var(--navy);color:#fff;border-radius:16px;padding:5px 14px;font-size:14px;font-weight:800}
+.hero{display:flex;align-items:center;gap:10px;padding:10px 14px}
+.hero .bub{flex:1;background:#fff;border-radius:24px 24px 24px 6px;padding:14px 16px;text-align:center;box-shadow:0 4px 14px #1b3a8c1c;position:relative}
+.hero .bub b{display:block;font-size:20px;color:var(--navy);font-weight:900}
+.hero .bub span{font-size:14px;color:var(--ink)}
+.hero img{width:128px;height:128px;border-radius:30px;object-fit:cover;box-shadow:0 6px 16px #1b3a8c26;border:3px solid #fff;flex:none}
+.pop{animation:pop .6s}
+@keyframes pop{0%{transform:scale(1)}35%{transform:scale(1.12) rotate(-4deg)}100%{transform:scale(1)}}
+.datebar{display:flex;align-items:center;justify-content:space-between;margin:2px 0 12px}
+.datebar button{border:0;background:#fff;border-radius:16px;width:46px;height:46px;font-size:22px;box-shadow:0 4px 10px #1b3a8c1f;color:var(--navy);font-weight:900}
+.datebar div{text-align:center;font-weight:800;color:var(--navy)}
+.datebar small{display:block;color:var(--mut);font-weight:500;font-size:12px}
+.progrow{display:flex;align-items:center;gap:16px}
+.ring{--p:0;width:112px;height:112px;border-radius:50%;background:conic-gradient(var(--grn) calc(var(--p)*1%),#d6e8fb 0);display:grid;place-items:center;flex:none}
+.ring>div{width:84px;height:84px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:26px;font-weight:900;color:var(--navy)}
+.progrow .tx{flex:1}
+.progrow .tx b{display:block;font-size:17px;color:var(--navy)}
+.progrow .tx span{color:var(--mut);font-size:13px}
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.cat{border:3px solid #fff;border-radius:24px;padding:0;overflow:hidden;font:inherit;cursor:pointer;box-shadow:0 6px 16px #1b3a8c1f;text-align:center;display:flex;flex-direction:column}
+.cat img{width:100%;height:118px;object-fit:cover;display:block}
+.cat .n{padding:9px 6px 10px;font-weight:800;font-size:14px;color:var(--navy);background:#ffffffb8}
+.cat .n small{display:block;font-weight:600;color:var(--mut);font-size:12px}
+.cat.sel{border-color:var(--blue);box-shadow:0 0 0 3px #2f8cff55,0 6px 16px #1b3a8c1f}
+.chips{display:flex;gap:8px;margin-bottom:12px;overflow-x:auto}
+.chip{border:0;background:#fff;border-radius:16px;padding:8px 14px;font:inherit;font-size:13px;font-weight:800;color:var(--navy);white-space:nowrap;box-shadow:0 2px 8px #1b3a8c1a}
+.chip.on{background:var(--blue);color:#fff}
+.task{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:20px;background:#fff;border:2px solid #e3effc;margin-bottom:9px;width:100%;text-align:right;font:inherit;color:inherit;cursor:pointer;box-shadow:0 3px 8px #1b3a8c10}
+.task .ck{width:34px;height:34px;border-radius:50%;border:3px solid #b9d3f2;flex:none;display:grid;place-items:center;color:#fff;font-size:19px;background:#f4f9ff}
+.task.done{background:#e8f9ee;border-color:#b8ebcb}
+.task.done .ck{background:var(--grn);border-color:var(--grn)}
+.task.done .t{text-decoration:line-through;color:var(--mut)}
+.task .t{flex:1;font-size:16px;font-weight:700}
+.task .s{font-size:13px;color:#c97a00;font-weight:800;background:#fff4cf;border-radius:12px;padding:3px 9px}
+.glabel{display:flex;align-items:center;gap:8px;font-weight:900;color:var(--navy);margin:14px 4px 8px}
+.glabel img{width:30px;height:30px;border-radius:50%;object-fit:cover;object-position:50% 28%}
+nav{position:fixed;bottom:0;left:0;right:0;background:#ffffffee;display:flex;justify-content:space-around;gap:4px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -6px 22px #1b3a8c24;border-radius:26px 26px 0 0;z-index:5}
+nav button{flex:1;border:0;background:none;font:inherit;font-size:11px;font-weight:700;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:18px}
+nav button .e{font-size:24px;line-height:1}
+nav button.on{background:linear-gradient(180deg,#4aa3ff,#2f78f0);color:#fff;box-shadow:0 4px 12px #2f78f066}
+.btn{border:0;background:linear-gradient(180deg,#4aa3ff,#2f78f0);color:#fff;font:inherit;font-weight:800;padding:12px 20px;border-radius:18px;font-size:15px;box-shadow:0 4px 12px #2f78f055}
+.btn.sec{background:#fff;color:var(--navy);box-shadow:0 2px 8px #1b3a8c1f}
+.btn.red{background:linear-gradient(180deg,#ff7b7b,#e25555);box-shadow:0 4px 12px #e2555555}
+.btn.g{background:linear-gradient(180deg,#4fd98a,#2fb868);box-shadow:0 4px 12px #2fb86855}
+.btn[disabled]{opacity:.45;box-shadow:none}
+input,select,textarea{font:inherit;width:100%;padding:12px;border:2px solid #cfe3fa;border-radius:16px;background:#fff;color:var(--ink);margin-bottom:10px}
+textarea{min-height:96px}
+label{font-size:13px;color:var(--mut);display:block;margin-bottom:4px;font-weight:700}
+.row{display:flex;gap:8px;align-items:center}
+.row>*{flex:1}
+.row .fit{flex:none}
+.moods{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.mood{border:3px solid #fff;border-radius:20px;padding:0;overflow:hidden;font:inherit;box-shadow:0 4px 10px #1b3a8c1c;background:#fff}
+.mood img{width:100%;height:86px;object-fit:cover;display:block}
+.mood span{display:block;font-size:12px;font-weight:800;color:var(--navy);padding:5px 2px 6px}
+.mood.on{border-color:var(--blue);box-shadow:0 0 0 3px #2f8cff55}
+.bars{display:flex;align-items:flex-end;gap:7px;height:140px;margin-top:6px}
+.bars div{flex:1;text-align:center;font-size:11px;color:var(--mut);font-weight:700}
+.bars i{display:block;background:linear-gradient(0deg,#2f8cff,#7fc3ff);border-radius:10px 10px 4px 4px;margin-bottom:4px;min-height:5px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:#fff;border-radius:20px;padding:12px;text-align:center;box-shadow:0 3px 10px #1b3a8c14;font-size:13px;color:var(--mut);font-weight:700}
+.stat b{display:block;font-size:24px;color:var(--navy);font-weight:900}
+.prog{height:14px;background:#d6e8fb;border-radius:10px;overflow:hidden;margin:6px 0}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,#34c46e,#7fe3a4);border-radius:10px}
+.rw{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1.5px dashed #cfe0f5}
+.rw:last-child{border:0}
+.rw img{width:56px;height:56px;border-radius:18px;object-fit:cover;flex:none}
+.rw .n{flex:1;font-weight:800;color:var(--navy)}
+.hint{color:var(--mut);font-size:13px;line-height:1.8;font-weight:500}
+.mini{border:0;background:#e6f1ff;color:var(--blue);border-radius:12px;padding:7px 12px;font:inherit;font-size:13px;font-weight:800}
+.bal{position:relative;border-radius:26px;overflow:hidden;margin-bottom:14px;box-shadow:0 8px 24px #1b3a8c26;border:3px solid #fff}
+.bal img{width:100%;height:230px;object-fit:cover;object-position:30% 20%;display:block}
+.bal .b{position:absolute;right:12px;bottom:12px;left:12px;background:#ffffffe6;border-radius:20px;padding:10px 14px;text-align:center;font-weight:900;color:var(--navy);font-size:18px}
+.player{display:flex;align-items:center;gap:12px}
+.player .play{width:50px;height:50px;border-radius:50%;border:0;background:linear-gradient(180deg,#4aa3ff,#2f78f0);color:#fff;font-size:20px;flex:none;box-shadow:0 4px 12px #2f78f066}
+.player .info{flex:1}
+.player input[type=range]{padding:0;margin:6px 0 0;border:0;height:24px;background:none}
+.modal{position:fixed;inset:0;background:#10286955;display:flex;align-items:flex-end;justify-content:center;z-index:20}
+.modal>div{background:#fff;width:100%;max-width:640px;border-radius:28px 28px 0 0;padding:20px;max-height:90vh;overflow:auto}
+.react{position:fixed;inset:0;display:grid;place-items:center;z-index:25;pointer-events:none}
+.react>div{background:#fff;border-radius:28px;padding:14px;text-align:center;box-shadow:0 16px 40px #1b3a8c55;animation:pop .6s;border:3px solid #fff;max-width:240px}
+.react img{width:170px;height:170px;border-radius:22px;object-fit:cover;display:block;margin:0 auto 8px}
+.react b{color:var(--navy);font-size:17px}
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:20px;z-index:30;font-size:14px;max-width:90%;text-align:center;font-weight:700}
+.tic{width:52px;height:52px;border-radius:17px;background:linear-gradient(180deg,#fff,#e6f3ff);display:grid;place-items:center;font-size:30px;flex:none;box-shadow:inset 0 0 0 2px #d4e6fb;line-height:1}
+.task.done .tic{background:#d7f5e3;box-shadow:inset 0 0 0 2px #b8ebcb}
+.daily{background:linear-gradient(135deg,#fff7d6,#ffe9a6)}
+.daily .dl{font-size:12px;font-weight:800;color:#a15f00}
+.daily .dq{font-size:18px;font-weight:900;color:var(--navy);line-height:1.9;margin-top:4px}
+.remind{background:linear-gradient(135deg,#d9f3ff,#bfe6fb);display:flex;align-items:center;gap:12px}
+.remind b{flex:1;color:var(--navy)}
+.icons{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:12px}
+.icons button{border:2px solid #d4e6fb;background:#fff;border-radius:12px;font-size:22px;padding:6px 0;line-height:1.2}
+.icons button.on{border-color:var(--blue);background:#e6f1ff}
+img.prev{width:100%;border-radius:18px;border:2px solid #d4e6fb;display:block}
+.shgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.lg{width:52px;height:52px;border-radius:50%;box-shadow:0 0 0 3px #fff,0 6px 12px #1b3a8c33;flex:none}
+.kidchip{border:0;background:#fff;color:var(--navy);font:inherit;font-weight:800;font-size:13px;border-radius:16px;padding:6px 12px;box-shadow:0 3px 8px #1b3a8c1f;margin-bottom:10px}
+.hero2{display:flex;align-items:center;gap:12px;padding:12px}
+.hero2 img{width:84px;height:84px;border-radius:24px;object-fit:cover;flex:none;border:3px solid #fff;box-shadow:0 4px 12px #1b3a8c26}
+.hero2 b{display:block;color:var(--navy);font-size:16px;font-weight:900}
+.hero2 .dq2{font-size:14px;color:var(--ink);line-height:1.9;margin-top:2px;font-weight:600}
+.slim{padding:12px 16px}
+.slim .tr{display:flex;justify-content:space-between;font-size:13px;font-weight:800;color:var(--navy)}
+.acc{background:var(--card);border-radius:22px;margin-bottom:10px;box-shadow:0 6px 18px #1b3a8c1a;border:1.5px solid #fff;overflow:hidden}
+.accrow{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;font:inherit;padding:10px 14px;text-align:right;color:var(--navy);min-height:64px}
+.accrow .av{width:46px;height:46px;border-radius:50%;object-fit:cover;object-position:50% 30%;flex:none;box-shadow:0 0 0 3px #fff,0 3px 8px #1b3a8c26}
+.accrow .an{flex:1;font-weight:900;font-size:16px}
+.accrow .ac{font-size:13px;font-weight:800;color:var(--mut);background:#eaf3ff;border-radius:12px;padding:3px 10px}
+.accrow .ac.ok{background:var(--grn);color:#fff}
+.accrow .chev{font-size:22px;color:var(--mut);transition:transform .2s;line-height:1}
+.acc.open .chev{transform:rotate(180deg)}
+.accbody{padding:2px 12px 12px}
+.addpack{width:100%;margin-top:4px}
+.lockwrap{position:relative;overflow:hidden}
+.blur{filter:blur(6px);pointer-events:none;opacity:.7}
+.lockov{position:absolute;inset:0;display:grid;place-items:center}
+.bars.thin{gap:3px}
+.pw .pwh{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.pw .pwh img{width:72px;height:72px;border-radius:22px;object-fit:cover;flex:none}
+.feat{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:16px;margin-bottom:6px;background:#f4f9ff}
+.feat.hl{background:#fff4cf;box-shadow:inset 0 0 0 2px #ffc933}
+.feat .fi{font-size:26px;width:40px;text-align:center;flex:none}
+.feat .fn{flex:1}.feat .fn b{color:var(--navy);font-size:14px}
+.feat .hint{font-size:12px;line-height:1.6}
+.feat .okk{color:var(--grn);font-weight:900;font-size:20px}
+.soon{font-size:11px;font-weight:800;color:#a15f00;background:#fff0c2;border-radius:10px;padding:3px 8px}
+.plans{display:flex;gap:10px;margin:12px 0}
+.plan{flex:1;position:relative;border:3px solid #d4e6fb;background:#fff;border-radius:18px;padding:16px 8px 12px;font:inherit;color:var(--navy);display:flex;flex-direction:column;gap:2px;align-items:center}
+.plan b{font-size:16px}.plan span{font-size:13px;color:var(--mut);font-weight:700}
+.plan.on{border-color:var(--blue);background:#eaf3ff}
+.plan em{position:absolute;top:-10px;background:var(--org);color:#fff;font-style:normal;font-size:11px;font-weight:800;border-radius:10px;padding:2px 8px}
+.plusc{background:linear-gradient(135deg,#fff7d6,#ffe9a6)}
+.plans{flex-wrap:wrap}
+.plan{flex:1 1 42%}
+.plan s{font-size:12px;color:var(--mut)}
+</style>
+</head>
+<body>
+<div class="top" id="top"></div>
+<main id="app"></main>
+<nav id="nav"></nav>
+<div id="layer"></div>
+
+<script>
+/* ---------- داده ---------- */
+const KEY='ravino_v2';
+const CATS=[
+ {id:'choice',name:'انتخاب‌های خودم',img:'c_choice'},
+ {id:'school',name:'مدرسه و یادگیری',img:'c_school'},
+ {id:'home',name:'سهم من در خانه',img:'c_home'},
+ {id:'self',name:'کارهای شخصی',img:'c_self'}
+];
+const MOODS=[['m_happy','خوشحال'],['m_think','متفکر'],['m_cheer','تشویق‌کننده'],['m_wow','متعجب'],['m_calm','آرام'],['m_learn','عاشق یادگیری']];
+const DEF={
+ name:'',pin:'',sound:true,vol:60,
+ tasks:[
+  {id:'t1',title:'انجام تکلیف‌ها',cat:'school',stars:3},
+  {id:'t2',title:'مرتب کردن کیف مدرسه',cat:'school',stars:1},
+  {id:'t3',title:'خواندن کتاب ۱۵ دقیقه',cat:'school',stars:2},
+  {id:'t4',title:'مسواک زدن',cat:'self',stars:1},
+  {id:'t5',title:'شستن دست‌ها قبل از غذا',cat:'self',stars:1},
+  {id:'t6',title:'آماده کردن لباس فردا',cat:'self',stars:1},
+  {id:'t7',title:'مرتب کردن تخت',cat:'home',stars:1},
+  {id:'t8',title:'کمک به خانواده',cat:'home',stars:2},
+  {id:'t9',title:'جمع کردن اسباب‌بازی‌ها',cat:'home',stars:1},
+  {id:'t10',title:'ورزش یا بازی در حیاط',cat:'choice',stars:2},
+  {id:'t11',title:'نقاشی یا کار هنری',cat:'choice',stars:2},
+  {id:'t12',title:'یک کار خوب برای کسی',cat:'choice',stars:2}
+ ],
+ done:{},notes:{},
+ rewards:[
+  {id:'r1',title:'نیم‌ساعت بازی دلخواه',img:'b_game',cost:15},
+  {id:'r2',title:'انتخاب فیلم شب جمعه',img:'b_adv',cost:25},
+  {id:'r3',title:'بستنی با خانواده',img:'b_goal',cost:40}
+ ],
+ claimed:[]
+};
+const ICD={t1:'✏️',t2:'🎒',t3:'📖',t4:'🪥',t5:'🧼',t6:'👕',t7:'🛏️',t8:'🤝',t9:'🧸',t10:'⚽',t11:'🎨',t12:'💛'};
+const CATIC={school:'📚',self:'🪥',home:'🏠',choice:'⭐'};
+const ICONS=['✏️','📚','📖','🎒','📝','🔢','🔤','🎨','🖍️','🎵','⚽','🏃','🚴','🧘','🪥','🧼','🛁','🚿','👕','👟','🛏️','🍽️','🥛','🍎','🥦','🧸','🧹','🗑️','🌱','🐶','🤝','💛','👨‍👩‍👧','✂️','🧩','🎲','🌙','⏰','🧺','💧','🙏','⭐'];
+const QUOTES=['امروز یک روز تازه است؛ با یک لبخند شروع کن!','هر کار کوچک، یک قدم بزرگ است.','تو می‌تونی، فقط شروع کن.','اشتباه کردن یعنی در حال یاد گرفتنی.','هر روز کمی بهتر از دیروز، همین کافیه.','کارهات رو خودت انجام بده و به خودت افتخار کن.','تلاش کردن از برنده شدن هم قشنگ‌تره.','دست‌های کوچک تو می‌تونن کارهای بزرگ بکنن.','امروز یک کار خوب برای یک نفر انجام بده.','صبر کن و ادامه بده، به زودی موفق می‌شی.','هر چیزی که یاد می‌گیری، یک ستاره تازه است.','تو مهم هستی و کارهات ارزش دارن.','مهربان بودن قشنگ‌ترین کار دنیاست.','وقتی سخته، یک نفس عمیق بکش و دوباره امتحان کن.','اول کارهای مهم، بعد بازی؛ بازی بیشتر می‌چسبه!','تو هر روز داری قوی‌تر می‌شی.','کتاب خوندن یعنی سفر به یک دنیای جدید.','اتاق مرتب، ذهن آرام.','سؤال پرسیدن نشونه‌ی باهوش بودنه.','امروز یک چیز جدید یاد بگیر.','تو قهرمان کارهای خودتی!','هیچ کاری اونقدر سخت نیست که با تلاش نشه.','لبخند بزن؛ روباه کوچولو همراهته!','هر ستاره نشون می‌ده که تلاش کردی.','مسواک زدن یعنی دندون‌های سالم و لبخند قشنگ.','کمک کردن به خانواده، دل همه رو شاد می‌کنه.','به خودت بگو: «من می‌تونم!»','امروز یک قدم از دیروز جلوتری.','دوست خوب، مهربون و راستگوئه.','راستگویی یعنی شجاعت.','کار تموم‌شده یعنی بازی با خیال راحت.','یاد گرفتن مثل بازیه؛ هرچی بیشتر بازی کنی بهتر می‌شی.','هر روز یک کار کوچک، آخر هفته یک نتیجه بزرگ.','به خودت افتخار کن، امروز هم تلاش کردی.','از اشتباه نترس؛ هر اشتباه یک درس تازه‌ست.','آب بخور، بازی کن و شاد باش!','صبح زود بیدار شدن، شروع قشنگ روزه.','تو یک ستاره‌ای که داره می‌درخشه.','سخت‌کوشی بهترین جادوی دنیاست.','امروز به کسی که دوستش داری «ممنون» بگو.','با هم بودن، کارها رو شیرین‌تر می‌کنه.','هر روز فرصت تازه‌ای برای شروع دوباره‌ست.','چیزی که امروز شروع می‌کنی، فردا آسون‌تر می‌شه.','کنجکاو باش و دنیا رو بگرد!','وسایلت رو سر جاش بذار تا راحت پیداشون کنی.','با صبر و تلاش، کارهای بزرگ شدنیه.','تو از چیزی که فکر می‌کنی قوی‌تری.','خوشحالی رو با بقیه تقسیم کن.','امروز عالی می‌شه چون تو شروعش کردی!','قدم به قدم، تا قله.'];
+function dailyQuote(d){const n=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5);return QUOTES[n%QUOTES.length]}
+let S,META;
+const clone=o=>JSON.parse(JSON.stringify(o));
+const META_KEY='ravino_meta';
+function loadMeta(){let m=null;try{m=JSON.parse(localStorage.getItem(META_KEY))}catch(e){}
+ m=Object.assign({kids:[{id:'k1',key:KEY,name:''}],active:'k1',plan:{tier:'free'},pin:null,used:[]},m||{});
+ if(!m.kids||!m.kids.length)m.kids=[{id:'k1',key:KEY,name:''}];
+ if(!m.kids.find(k=>k.id===m.active))m.active=m.kids[0].id;
+ META=m}
+function saveMeta(){try{localStorage.setItem(META_KEY,JSON.stringify(META))}catch(e){}}
+const kid=()=>META.kids.find(k=>k.id===META.active);
+function load(){loadMeta();let o=null;try{o=JSON.parse(localStorage.getItem(kid().key))}catch(e){}
+ S=Object.assign(clone(DEF),o||{});
+ const mp={study:'school',grow:'choice'};S.tasks.forEach(t=>{if(mp[t.cat])t.cat=mp[t.cat];if(!t.ic)t.ic=ICD[t.id]||CATIC[t.cat]||'⭐'});
+ if(META.pin==null){META.pin=S.pin||'';saveMeta()}
+ if(S.name&&kid().name!==S.name){kid().name=S.name;saveMeta()}}
+function save(){try{localStorage.setItem(kid().key,JSON.stringify(S));if(kid().name!==S.name){kid().name=S.name;saveMeta()}}catch(e){toast('ذخیره‌سازی ممکن نشد')}}
+load();
+
+/* ---------- تاریخ ---------- */
+const JM=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+const WD=['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'];
+const WS=['ی','د','س','چ','پ','ج','ش'];
+const fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+function key(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function jp(d){const p=new Intl.DateTimeFormat('en-u-ca-persian-nu-latn',{year:'numeric',month:'numeric',day:'numeric'}).formatToParts(d);
+ const o={};p.forEach(x=>o[x.type]=x.value);return {y:+o.year,m:+o.month,d:+o.day}}
+function jtxt(d){const j=jp(d);return fa(j.d)+' '+JM[j.m-1]+' '+fa(j.y)}
+let cur=new Date();cur.setHours(12,0,0,0);
+let tab='home',selCat='all',hint=0;
+const img=(n,cls)=>`<img src="img/${n}.webp" alt="" ${cls?`class="${cls}"`:''}>`;
+
+/* ---------- ابزار ---------- */
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2200)}
+let AC;function ac(){AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();return AC}
+function note(f,t0,dur,vol,type){const c=ac(),o=c.createOscillator(),g=c.createGain();o.type=type||'sine';o.frequency.value=f;
+ g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(vol,t0+.02);g.gain.exponentialRampToValueAtTime(.0001,t0+dur);
+ o.connect(g);g.connect(c.destination);o.start(t0);o.stop(t0+dur+.02)}
+function beep(kind){if(!S.sound)return;try{const c=ac(),n=kind==='win'?[523,659,784,1047]:kind==='undo'?[330]:[660,880];
+ n.forEach((f,i)=>note(f,c.currentTime+i*.11,.18,.16))}catch(e){}}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>'x'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+function doneSet(k){return new Set(S.done[k]||[])}
+function dayStars(k){const ds=doneSet(k);return S.tasks.filter(t=>ds.has(t.id)).reduce((a,t)=>a+t.stars,0)}
+function earned(){return Object.keys(S.done).reduce((a,k)=>{const ds=new Set(S.done[k]);return a+S.tasks.filter(t=>ds.has(t.id)).reduce((x,t)=>x+t.stars,0)},0)}
+const spent=()=>S.claimed.reduce((a,c)=>a+c.cost,0);
+const balance=()=>earned()-spent();
+function counts(k){const ds=doneSet(k);return {n:S.tasks.filter(t=>ds.has(t.id)).length,tot:S.tasks.length}}
+
+/* ---------- موسیقی ---------- */
+const SONGS=[
+ {n:'موسیقی شاد',bpm:128,s:[0,4,7,12,9,7,4,2,5,9,12,14,12,9,7,4]},
+ {n:'موسیقی آرام',bpm:84,s:[0,4,7,4,5,9,12,9,7,11,14,11,4,7,4,0]},
+ {n:'موسیقی ماجراجویی',bpm:144,s:[7,7,9,7,12,11,7,7,9,7,14,12,7,7,19,16,12,11,9,17,17,16,12,14,12]}
+];
+let song=0,playing=false,timer=null,step=0;
+function tick(){if(!playing)return;const sg=SONGS[song],c=ac(),v=(S.vol/100)*.2;
+ note(523.25*Math.pow(2,sg.s[step%sg.s.length]/12),c.currentTime,.28,Math.max(.0002,v),'triangle');
+ if(step%4===0)note(130.8*Math.pow(2,sg.s[step%sg.s.length]/12),c.currentTime,.4,Math.max(.0002,v*.7),'sine');
+ step++}
+function musicToggle(){playing=!playing;clearInterval(timer);if(playing){step=0;tick();timer=setInterval(tick,60000/SONGS[song].bpm/2)}render(true)}
+function musicNext(){song=(song+1)%SONGS.length;if(playing){clearInterval(timer);step=0;timer=setInterval(tick,60000/SONGS[song].bpm/2)}render(true)}
+function setVol(v){S.vol=+v;save()}
+function player(){return `<div class="card"><div class="player"><button class="play" onclick="musicToggle()" aria-label="پخش یا توقف">${playing?'❚❚':'▶'}</button>
+ <div class="info"><b style="color:var(--navy)">🎵 ${SONGS[song].n}</b><input type="range" min="0" max="100" value="${S.vol}" oninput="setVol(this.value)" aria-label="صدا"></div>
+ <button class="mini" onclick="musicNext()">انتخاب آهنگ</button></div></div>`}
+
+/* ---------- نمایش ---------- */
+function topbar(){document.getElementById('top').innerHTML=`<img class="lg" src="img/logo.webp" alt=""><div class="logo"><b>راوینو ⭐</b><small>Ravino</small></div><div class="pill star">⭐ ${fa(balance())}</div>`}
+function navbar(){
+ const it=[['home','🏠','کارهای من'],['report','📊','گزارش'],['rewards','🏆','جایزه‌ها'],['notes','📒','یادداشت'],['parent','⚙️','تنظیمات']];
+ document.getElementById('nav').innerHTML=it.map(i=>`<button class="${tab===i[0]?'on':''}" onclick="go('${i[0]}')"><span class="e">${i[1]}</span>${i[2]}</button>`).join('')}
+function go(t){if(t==='parent'&&META.pin&&!window._unlocked){return askPin(()=>{window._unlocked=true;go('parent')})}tab=t;render()}
+function kidBar(){return META.kids.length>1?`<button class="kidchip" onclick="openKids()">🧒 ${esc(S.name||'کودک')} ▾</button>`:''}
+function render(keep){topbar();navbar();document.getElementById('app').innerHTML=(tab==='parent'?'':kidBar())+({home:vHome,report:vReport,rewards:vRewards,notes:vNotes,parent:vParent})[tab]();if(!keep)window.scrollTo(0,0)}
+
+function dateBar(){const today=key(new Date())===key(cur);
+ return `<div class="datebar"><button onclick="shift(1)" aria-label="روز بعد">›</button><div>${WD[cur.getDay()]} ${jtxt(cur)}<small>${today?'امروز':'روز انتخاب‌شده'}</small></div><button onclick="shift(-1)" aria-label="روز قبل">‹</button></div>`}
+function shift(n){cur.setDate(cur.getDate()+n);render()}
+
+const PHR=[['بزن بریم!','اولین کار امروز رو انتخاب کن.'],['عالی پیش می‌ری!','یک قدم دیگه جلوتری.'],['تو می‌تونی!','هر روز یک قدم بهتر باش.'],['فوق‌العاده‌ای!','نزدیک پایان کارهای امروزی.']];
+let openCat=null;
+function vHome(){
+ const k=key(cur),ds=doneSet(k),{n,tot}=counts(k),pct=tot?Math.round(n/tot*100):0;
+ const heroImg=pct===0?'m_think':pct<100?'m_cheer':'m_happy';
+ const ph=pct===100?['آفرین! همه تموم شد 🎉','']:PHR[Math.min(3,Math.floor(pct/30))];
+ let h=dateBar()+`<div class="card hero2">${img(heroImg,'pop')}<div><b>${ph[0]}</b><div class="dq2">✨ ${dailyQuote(cur)}</div></div></div>`;
+ h+=remindCard();
+ h+=`<div class="card slim"><div class="tr"><span>${fa(n)} از ${fa(tot)} کار انجام شد</span><span>⭐ ${fa(dayStars(k))}</span></div><div class="prog"><i style="width:${pct}%"></i></div></div>`;
+ h+=CATS.map(c=>{const ts=S.tasks.filter(t=>t.cat===c.id);if(!ts.length)return '';
+  const d=ts.filter(t=>ds.has(t.id)).length,all=d===ts.length,open=openCat===c.id;
+  return `<div class="acc ${open?'open':''}"><button class="accrow" onclick="pickCat('${c.id}')">${img(c.img,'av')}<span class="an">${c.name}</span><span class="ac ${all?'ok':''}">${all?'✓ تمام':fa(d)+' از '+fa(ts.length)}</span><span class="chev">⌄</span></button>`+
+  (open?`<div class="accbody">`+ts.map(t=>`<button class="task ${ds.has(t.id)?'done':''}" onclick="toggle('${t.id}')"><span class="tic">${t.ic}</span><span class="t">${esc(t.title)}</span><span class="s">⭐${fa(t.stars)}</span><span class="ck">${ds.has(t.id)?'✓':''}</span></button>`).join('')+`</div>`:'')+`</div>`}).join('');
+ if(!tot)h+='<div class="card hint">هنوز کاری نداری. از تنظیمات والدین کار اضافه کن.</div>';
+ h+=`<button class="btn sec addpack" onclick="openPacks()">📦 افزودن بسته کار آماده</button>`;
+ return h}
+function remindCard(){
+ const dow=cur.getDay(),isToday=key(cur)===key(new Date());
+ const last=S.lastShare?new Date(S.lastShare+'T12:00:00'):null,ago=last?Math.round((new Date()-last)/864e5):99;
+ if(isToday&&(dow===4||dow===5)&&ago>5)return `<div class="card remind"><span style="font-size:34px">📤</span><b>وقت گزارش هفته است! برای خانواده بفرست.</b><button class="btn" onclick="openShare()">بفرست</button></div>`;
+ return ''}
+function pickCat(id){openCat=(openCat===id?null:id);render(true)}
+
+function react(im,txt){const d=document.createElement('div');d.className='react';d.innerHTML=`<div>${img(im)}<b>${txt}</b></div>`;document.body.appendChild(d);setTimeout(()=>d.remove(),1700)}
+const CH=[['m_cheer','آفرین!'],['m_happy','عالیه!'],['m_wow','وای، چه سریع!'],['m_learn','کارت درسته!'],['m_calm','خیلی خوبه!']];
+function toggle(id){const k=key(cur),ds=doneSet(k);
+ if(ds.has(id)){ds.delete(id);beep('undo')}else{ds.add(id);beep('ok')}
+ S.done[k]=[...ds];save();
+ const all=S.tasks.length&&S.tasks.every(t=>ds.has(t.id));
+ render(true);
+ if(ds.has(id)){if(all){beep('win');react('star_fox','همه کارهای امروز تمام شد! 🎉')}else{const c=CH[Math.floor(Math.random()*CH.length)];react(c[0],c[1])}}}
+
+function vReport(){
+ const days=[];for(let i=6;i>=0;i--){const d=new Date(cur);d.setDate(d.getDate()-i);days.push(d)}
+ const tot=S.tasks.length||1;
+ const vals=days.map(d=>{const ds=doneSet(key(d));return S.tasks.filter(t=>ds.has(t.id)).length});
+ const week=vals.reduce((a,b)=>a+b,0),weekStars=days.reduce((a,d)=>a+dayStars(key(d)),0);
+ const full=vals.filter(v=>S.tasks.length&&v===S.tasks.length).length;
+ let streak=0;const d=new Date();d.setHours(12);for(;;){const ds=doneSet(key(d));if(S.tasks.length&&S.tasks.every(t=>ds.has(t.id))){streak++;d.setDate(d.getDate()-1)}else if(streak===0&&key(d)===key(new Date())){d.setDate(d.getDate()-1)}else break}
+ const wp=Math.round(week/(tot*7)*100);
+ const cats=CATS.map(c=>{const ts=S.tasks.filter(t=>t.cat===c.id);if(!ts.length)return '';
+  const dn=days.reduce((a,x)=>{const ds=doneSet(key(x));return a+ts.filter(t=>ds.has(t.id)).length},0),p=dn/(ts.length*7)*100;
+  return `<div class="rw">${img(c.img)}<div class="n">${c.name}<div class="prog"><i style="width:${p}%"></i></div></div><b style="color:var(--navy)">${fa(Math.round(p))}٪</b></div>`}).join('');
+ return dateBar()+`<div class="card"><div class="progrow"><div class="ring" style="--p:${wp}"><div>${fa(wp)}٪</div></div><div class="tx"><b>این هفته</b><span>۷ روز تا تاریخ انتخاب‌شده</span></div></div></div>
+ <div class="card"><h2><span class="tag">کارهای هر روز</span></h2><div class="bars">${days.map((x,i)=>`<div><i style="height:${vals[i]/tot*100}px"></i>${WS[x.getDay()]}<br>${fa(jp(x).d)}</div>`).join('')}</div></div>
+ <div class="grid"><div class="stat"><b>${fa(week)}</b>کار انجام‌شده</div><div class="stat"><b>⭐ ${fa(weekStars)}</b>ستاره هفته</div><div class="stat"><b>${fa(full)}</b>روز کامل</div><div class="stat"><b>🔥 ${fa(streak)}</b>روز پشت‌سرهم</div></div>
+ <div class="card" style="margin-top:14px"><h2><span class="tag">برای خانواده</span></h2><p class="hint" style="margin-top:0">گزارش این هفته را با یک تصویر قشنگ برای پدر و مادر یا خانواده بفرست تا ببینند چه کارهایی کرده‌ای.</p><button class="btn" style="width:100%" onclick="openShare()">📤 ارسال گزارش هفته</button></div>
+ ${monthCard()}<div class="card"><h2><span class="tag">هر دسته چقدر؟</span></h2>${cats}</div>`}
+
+function vRewards(){
+ const b=balance();
+ let h=`<div class="bal">${img('hero_jar')}<div class="b">موجودی ستاره‌ها: ⭐ ${fa(b)}</div></div><div class="card"><h2><span class="tag">جایزه‌ها و سرگرمی</span></h2>`;
+ h+=S.rewards.map(r=>`<div class="rw">${img(r.img||'b_goal')}<div class="n">${esc(r.title)}<div class="hint">⭐ ${fa(r.cost)}${b<r.cost?` · ${fa(r.cost-b)} ستاره مانده`:''}</div></div><button class="btn g" ${b<r.cost?'disabled':''} onclick="claim('${r.id}')">بگیر</button></div>`).join('')||'<div class="hint">والدین می‌توانند جایزه اضافه کنند.</div>';
+ h+=`</div>`;
+ if(S.claimed.length)h+=`<div class="card"><h2><span class="tag">جایزه‌های گرفته‌شده</span></h2>`+S.claimed.slice().reverse().slice(0,10).map(c=>`<div class="rw">${img('b_piggy')}<div class="n">${esc(c.title)}<div class="hint">${jtxt(new Date(c.at))}</div></div></div>`).join('')+`</div>`;
+ h+=player();return h}
+function claim(id){const r=S.rewards.find(x=>x.id===id);if(!r||balance()<r.cost)return;
+ if(!confirm('«'+r.title+'» را با '+fa(r.cost)+' ستاره بگیری؟'))return;
+ S.claimed.push({title:r.title,cost:r.cost,at:Date.now()});save();beep('win');render();react('b_goal','تبریک! جایزه‌ات رو گرفتی 🎁')}
+
+function vNotes(){const k=key(cur),n=S.notes[k]||{};
+ return dateBar()+`<div class="card"><h2><span class="tag">امروز چه حسی داشتم؟</span></h2>
+ <div class="moods">${MOODS.map((m,i)=>`<button class="mood ${n.mood===i?'on':''}" onclick="setMood(${i})">${img(m[0])}<span>${m[1]}</span></button>`).join('')}</div>
+ <label>یادداشت امروز</label><textarea id="nt" placeholder="امروز چه کار خوبی کردم؟ چه چیزی یاد گرفتم؟">${esc(n.text||'')}</textarea>
+ <button class="btn" onclick="saveNote()">ذخیره یادداشت</button></div>
+ <div class="card"><h2><span class="tag">یادداشت‌های اخیر</span></h2>`+(Object.keys(S.notes).sort().reverse().slice(0,7).filter(x=>S.notes[x].text||S.notes[x].mood!=null).map(x=>{const q=S.notes[x],d=new Date(x+'T12:00:00');
+  return `<div class="rw">${img(q.mood!=null?MOODS[q.mood][0]:'m_calm')}<div class="n">${esc(q.text||MOODS[q.mood][1])}<div class="hint">${jtxt(d)}</div></div></div>`}).join('')||'<div class="hint">هنوز یادداشتی نیست.</div>')+`</div>`}
+function setMood(i){const k=key(cur),t=document.getElementById('nt');S.notes[k]=Object.assign(S.notes[k]||{},{mood:i,text:t?t.value:(S.notes[k]||{}).text});save();render()}
+function saveNote(){const k=key(cur);S.notes[k]=Object.assign(S.notes[k]||{},{text:document.getElementById('nt').value});save();toast('ذخیره شد ✓');render()}
+
+function vParent(){
+ return `<div class="card"><h2><span class="tag">تنظیمات والدین</span></h2>
+ <label>اسم کودک</label><input id="p_n" value="${esc(S.name)}" maxlength="20">
+ <label>رمز والدین (۴ رقم، اختیاری — برای همه‌ی کودکان)</label><input id="p_p" inputmode="numeric" maxlength="4" value="${esc(META.pin||'')}" placeholder="بدون رمز">
+ <label>صدای افکت‌ها</label><select id="p_s"><option value="1" ${S.sound?'selected':''}>روشن</option><option value="0" ${!S.sound?'selected':''}>خاموش</option></select>
+ <button class="btn" onclick="saveSettings()">ذخیره تنظیمات</button></div>
+ ${plusCard()}${kidsCard()}${packsCard()}
+ <div class="card"><h2><span class="tag">کارها</span></h2>${CATS.map(c=>S.tasks.filter(t=>t.cat===c.id).map(t=>`<div class="rw"><div class="tic">${t.ic}</div><div class="n">${esc(t.title)}<div class="hint">${c.name} · ⭐ ${fa(t.stars)}</div></div><button class="mini" onclick="editTask('${t.id}')">ویرایش</button></div>`).join('')).join('')}
+ <br><button class="btn sec" onclick="editTask()">+ کار جدید</button></div>
+ <div class="card"><h2><span class="tag">جایزه‌ها</span></h2>${S.rewards.map(r=>`<div class="rw">${img(r.img||'b_goal')}<div class="n">${esc(r.title)}<div class="hint">⭐ ${fa(r.cost)}</div></div><button class="mini" onclick="delReward('${r.id}')">حذف</button></div>`).join('')}
+ <br><button class="btn sec" onclick="addReward()">+ جایزه جدید</button></div>
+ <div class="card"><h2><span class="tag">پشتیبان‌گیری</span></h2><p class="hint">اطلاعات فقط روی همین دستگاه ذخیره می‌شوند. گاهی پشتیبان بگیر تا چیزی گم نشود. (پشتیبان فقط برای کودک انتخاب‌شده است.)</p>
+ <div class="row"><button class="btn" onclick="exportData()">گرفتن پشتیبان</button><button class="btn sec" onclick="document.getElementById('imp').click()">بازیابی</button></div>
+ <input type="file" id="imp" accept=".json,application/json" style="display:none" onchange="importData(this.files[0])">
+ <br><button class="btn red" onclick="resetAll()">پاک کردن اطلاعات این کودک</button></div>
+ <div class="hint" style="text-align:center"><a href="#" onclick="openLegal();return false" style="color:var(--blue);font-weight:800">قوانین و حریم خصوصی</a><br>راوینو — نسخه ۶</div>`}
+function saveSettings(){S.name=document.getElementById('p_n').value.trim();const p=document.getElementById('p_p').value.trim();
+ if(p&&!/^\d{4}$/.test(p))return toast('رمز باید ۴ رقم باشد');META.pin=p;saveMeta();S.sound=document.getElementById('p_s').value==='1';save();toast('ذخیره شد ✓');render()}
+function editTask(id){const t=S.tasks.find(x=>x.id===id)||{title:'',cat:'school',stars:1,ic:'⭐'};window._ic=t.ic||'⭐';
+ modal(`<h2 style="color:var(--navy)">${id?'ویرایش کار':'کار جدید'}</h2>
+ <label>عنوان</label><input id="f_t" value="${esc(t.title)}" maxlength="60">
+ <label>آیکون کار (بچه با دیدنش می‌فهمد این کار چیست)</label><div class="icons" id="ics">${ICONS.map(e=>`<button type="button" class="${e===window._ic?'on':''}" onclick="pickIc(this)">${e}</button>`).join('')}</div>
+ <label>دسته</label><select id="f_c">${CATS.map(c=>`<option value="${c.id}" ${c.id===t.cat?'selected':''}>${c.name}</option>`).join('')}</select>
+ <label>تعداد ستاره (۱ تا ۵)</label><select id="f_s">${[1,2,3,4,5].map(n=>`<option ${n===t.stars?'selected':''} value="${n}">${fa(n)}</option>`).join('')}</select>
+ <div class="row"><button class="btn" onclick="saveTask('${id||''}')">ذخیره</button>${id?`<button class="btn red" onclick="delTask('${id}')">حذف</button>`:''}<button class="btn sec" onclick="closeM()">بستن</button></div>`)}
+function pickIc(b){window._ic=b.textContent;document.querySelectorAll("#ics button").forEach(x=>x.classList.toggle('on',x===b))}
+function saveTask(id){const title=document.getElementById('f_t').value.trim();if(!title)return toast('عنوان را بنویس');
+ const o={title,ic:window._ic||'⭐',cat:document.getElementById('f_c').value,stars:+document.getElementById('f_s').value};
+ if(id)Object.assign(S.tasks.find(x=>x.id===id),o);else S.tasks.push(Object.assign({id:uid()},o));
+ save();closeM();render()}
+function delTask(id){if(!confirm('این کار حذف شود؟'))return;S.tasks=S.tasks.filter(t=>t.id!==id);save();closeM();render()}
+function addReward(){modal(`<h2 style="color:var(--navy)">جایزه جدید</h2><label>عنوان</label><input id="r_t" maxlength="50"><label>تعداد ستاره لازم</label><input id="r_c" inputmode="numeric" value="20">
+ <div class="row"><button class="btn" onclick="saveReward()">ذخیره</button><button class="btn sec" onclick="closeM()">بستن</button></div>`)}
+function saveReward(){const t=document.getElementById('r_t').value.trim(),c=parseInt(document.getElementById('r_c').value.replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)),10);
+ if(!t||!(c>0))return toast('عنوان و تعداد ستاره را درست وارد کن');S.rewards.push({id:uid(),title:t,img:['b_coin','b_target','b_game','b_adv','b_goal'][S.rewards.length%5],cost:c});save();closeM();render()}
+function delReward(id){if(!confirm('حذف شود؟'))return;S.rewards=S.rewards.filter(r=>r.id!==id);save();render()}
+function exportData(){const b=new Blob([JSON.stringify(S)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='ravino-backup-'+key(new Date())+'.json';document.body.appendChild(a);a.click();a.remove();toast('فایل پشتیبان ساخته شد')}
+function importData(f){if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||!Array.isArray(d.tasks))throw 0;
+ if(!confirm('اطلاعات فعلی با پشتیبان جایگزین شود؟'))return;S=Object.assign(JSON.parse(JSON.stringify(DEF)),d);save();toast('بازیابی شد ✓');render()}catch(e){toast('فایل پشتیبان معتبر نیست')}};r.readAsText(f)}
+function resetAll(){if(!confirm('همه اطلاعات پاک شود؟ این کار برگشت ندارد.'))return;try{localStorage.removeItem(kid().key)}catch(e){}S=JSON.parse(JSON.stringify(DEF));window._unlocked=false;save();render()}
+
+/* ---------- گزارش هفته برای خانواده ---------- */
+const MOJ=['😄','🤔','👍','😮','😌','📖'];
+function streakNow(){let s=0;const d=new Date();d.setHours(12);for(;;){const ds=doneSet(key(d));if(S.tasks.length&&S.tasks.every(t=>ds.has(t.id))){s++;d.setDate(d.getDate()-1)}else if(s===0&&key(d)===key(new Date())){d.setDate(d.getDate()-1)}else break}return s}
+function weekInfo(){
+ const days=[];for(let i=6;i>=0;i--){const d=new Date(cur);d.setDate(d.getDate()-i);days.push(d)}
+ const tot=S.tasks.length;
+ const per=days.map(d=>{const k=key(d),ds=doneSet(k);return {d,n:S.tasks.filter(t=>ds.has(t.id)).length,st:dayStars(k)}});
+ const tasks=S.tasks.map(t=>({t,c:days.filter(d=>doneSet(key(d)).has(t.id)).length}));
+ return {days,per,tasks,tot,total:per.reduce((a,x)=>a+x.n,0),stars:per.reduce((a,x)=>a+x.st,0),full:per.filter(x=>tot&&x.n===tot).length}}
+function weekText(msg){const w=weekInfo(),nm=S.name||'کودک';
+ const L=['🦊 گزارش هفته‌ی '+nm+' در راوینو','📅 '+jtxt(w.days[0])+' تا '+jtxt(w.days[6]),'',
+  '✅ کارهای انجام‌شده: '+fa(w.total)+' از '+fa(w.tot*7),'⭐ ستاره‌ها: '+fa(w.stars),'🏅 روزهای کامل: '+fa(w.full),'🔥 روز پشت‌سرهم: '+fa(streakNow()),'','کارها در این هفته:'];
+ w.tasks.forEach(x=>L.push(x.t.ic+' '+x.t.title+' — '+fa(x.c)+' از ۷ روز'));
+ const ns=w.days.map(d=>S.notes[key(d)]).filter(Boolean);
+ const mj=ns.filter(n=>n.mood!=null).map(n=>MOJ[n.mood]);
+ if(mj.length)L.push('','حال و احساس این هفته: '+mj.join(' '));
+ const tx=ns.filter(n=>n.text).slice(-3).map(n=>'• '+n.text);
+ if(tx.length)L.push('','یادداشت‌ها:',...tx);
+ if(msg)L.push('','💬 پیام '+nm+': '+msg);
+ return L.join('\n')}
+function loadImg(src){return new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=src})}
+function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+function wrapTxt(c,txt,maxW){const ws=txt.split(' '),out=[];let cur='';ws.forEach(w=>{const t=cur?cur+' '+w:w;if(c.measureText(t).width>maxW&&cur){out.push(cur);cur=w}else cur=t});if(cur)out.push(cur);return out.slice(0,3)}
+async function drawCard(msg){
+ try{await document.fonts.load('800 40px Vazirmatn');await document.fonts.load('400 30px Vazirmatn')}catch(e){}
+ const w=weekInfo(),nm=S.name||'کودک',top=w.tasks.slice().sort((a,b)=>b.c-a.c).filter(x=>x.c>0).slice(0,5);
+ const fox=await loadImg('img/m_happy.webp');
+ const W=1080,tasksH=130+Math.max(1,top.length)*100,y3=1040,msgH=msg?230:0,H=y3+tasksH+msgH+150;
+ const cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');c.direction='rtl';
+ const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#8fd3f7');g.addColorStop(.4,'#bfe6fb');g.addColorStop(1,'#eaf6ff');c.fillStyle=g;c.fillRect(0,0,W,H);
+ c.fillStyle='rgba(255,255,255,.55)';[[160,120,90],[900,300,110],[120,700,100]].forEach(a=>{c.beginPath();c.arc(a[0],a[1],a[2],0,7);c.fill()});
+ const T=(s,x,y,sz,wt,col,al)=>{c.font=wt+' '+sz+'px Vazirmatn, Tahoma, sans-serif';c.fillStyle=col;c.textAlign=al||'right';c.fillText(s,x,y)};
+ if(fox){c.save();rr(c,60,60,290,290,56);c.clip();c.drawImage(fox,60,60,290,290);c.restore();c.lineWidth=8;c.strokeStyle='#fff';rr(c,60,60,290,290,56);c.stroke()}
+ T('گزارش هفته',1020,165,84,800,'#1b3a8c');T(nm,1020,255,64,700,'#27406f');T(jtxt(w.days[0])+' تا '+jtxt(w.days[6]),1020,325,34,400,'#5f7aa8');
+ c.fillStyle='#fff';rr(c,40,400,1000,230,40);c.fill();
+ const st=[[fa(w.total),'کار انجام‌شده'],['⭐ '+fa(w.stars),'ستاره'],[fa(w.full),'روز کامل'],['🔥 '+fa(streakNow()),'روز پشت‌سرهم']];
+ st.forEach((s,i)=>{const x=60+(3-i)*245;c.fillStyle='#f1f7ff';rr(c,x,425,225,180,28);c.fill();T(s[0],x+112,515,56,800,'#1b3a8c','center');T(s[1],x+112,570,28,700,'#5f7aa8','center')});
+ c.fillStyle='#fff';rr(c,40,660,1000,340,40);c.fill();T('کارهای هر روز',1010,725,38,800,'#1b3a8c');
+ const mx=Math.max(1,w.tot);w.per.forEach((p,i)=>{const cx=990-(i+.5)*128.5,bh=Math.max(8,p.n/mx*150);c.fillStyle='#2f8cff';rr(c,cx-34,925-bh,68,bh,Math.min(16,bh/2));c.fill();
+  T(fa(p.n),cx,915-bh,28,800,'#1b3a8c','center');T(WS[p.d.getDay()]+' '+fa(jp(p.d).d),cx,965,26,700,'#5f7aa8','center')});
+ c.fillStyle='#fff';rr(c,40,y3,1000,tasksH,40);c.fill();T('بیشتر انجام‌شده‌ها',1010,y3+75,38,800,'#1b3a8c');
+ if(!top.length)T('این هفته هنوز کاری ثبت نشده',1010,y3+170,32,400,'#5f7aa8');
+ top.forEach((x,i)=>{const y=y3+130+i*100;T(x.t.ic,1005,y+50,52,400,'#000');T(x.t.title,925,y+48,36,700,'#27406f');T(fa(x.c)+' از ۷ روز',90,y+48,32,800,'#2fb868','left')});
+ let yy=y3+tasksH+30;
+ if(msg){c.fillStyle='#fff4cf';rr(c,40,yy,1000,msgH-30,40);c.fill();T('💬 پیام '+nm,1010,yy+66,32,800,'#a15f00');c.font='700 38px Vazirmatn, Tahoma, sans-serif';const ls=wrapTxt(c,msg,900);ls.forEach((l,i)=>T(l,1010,yy+125+i*56,38,700,'#1b3a8c'));yy+=msgH}
+ T('راوینو ⭐',540,H-60,56,900,'#1b3a8c','center');
+ return cv}
+let shCv=null,shT=null;
+function shMsg(){return (document.getElementById('sh_m')||{}).value||''}
+async function shRefresh(){const c=await drawCard(shMsg());shCv=c;const el=document.getElementById('shp');if(el)el.innerHTML='<img class="prev" alt="گزارش هفته" src="'+c.toDataURL('image/png')+'">'}
+function shDebounce(){clearTimeout(shT);shT=setTimeout(shRefresh,400)}
+function openShare(){
+ modal(`<h2 style="color:var(--navy)">گزارش هفته برای خانواده</h2>
+ <label>پیام من برای خانواده (اختیاری)</label><input id="sh_m" maxlength="120" placeholder="مثلاً: این هفته خیلی تلاش کردم!" oninput="shDebounce()">
+ <div id="shp" class="hint" style="text-align:center">در حال ساخت تصویر...</div>
+ <button class="btn g" style="width:100%;margin-top:12px" onclick="shareNative()">📤 ارسال (انتخاب برنامه)</button>
+ <div class="shgrid"><button class="btn sec" onclick="shareLink('tg')">تلگرام</button><button class="btn sec" onclick="shareLink('wa')">واتساپ</button><button class="btn sec" onclick="shareLink('sms')">پیامک</button><button class="btn sec" onclick="copyText()">کپی متن</button></div>
+ <div class="row"><button class="btn sec" onclick="saveImg()">ذخیره تصویر</button><button class="btn sec" onclick="closeM()">بستن</button></div>`);
+ shRefresh()}
+function markShared(){S.lastShare=key(new Date());save()}
+async function shareNative(){const text=weekText(shMsg());
+ try{const c=shCv||await drawCard(shMsg());const blob=await new Promise(r=>c.toBlob(r,'image/png'));const f=new File([blob],'ravino-week.png',{type:'image/png'});
+  if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],text});
+  else if(navigator.share)await navigator.share({text});
+  else return toast('این دستگاه اشتراک مستقیم ندارد؛ از دکمه‌های پایین استفاده کن');
+  markShared()}catch(e){if(!e||e.name!=='AbortError')toast('ارسال نشد؛ از دکمه‌های پایین استفاده کن')}}
+function shareLink(k){const t=encodeURIComponent(weekText(shMsg()));markShared();
+ if(k==='sms'){location.href='sms:?&body='+t;return}
+ window.open(k==='tg'?'https://t.me/share/url?url=%20&text='+t:'https://wa.me/?text='+t,'_blank')}
+async function copyText(){try{await navigator.clipboard.writeText(weekText(shMsg()));markShared();toast('متن کپی شد ✓')}catch(e){toast('کپی نشد')}}
+function saveImg(){if(!shCv)return;const a=document.createElement('a');a.href=shCv.toDataURL('image/png');a.download='ravino-week.png';document.body.appendChild(a);a.click();a.remove();markShared()}
+
+/* =====================================================================
+   بخش پولی (راوینو پلاس) — زیرساخت
+   همه‌ی قفل‌ها از isPremium() می‌گذرند. پرداخت واقعی بعداً در Billing وصل می‌شود.
+   جزئیات: PREMIUM_HANDOFF.md
+   ===================================================================== */
+const CFG={
+ devMode:true,                 // برای نسخه‌ی نهایی false شود (دکمه‌ی آزمایشی پلاس را برمی‌دارد)
+ salt:'ravino-change-this-salt', // با tools/gen_codes.py یکی باشد؛ قبل از انتشار عوض شود
+ maxKids:5,
+ trialDays:7,
+ support:'',                    // آیدی/ایمیل پشتیبانی؛ در صفحه‌ی قوانین نشان داده می‌شود
+ plans:[ // قیمت‌ها نمونه‌اند و باید با آزمایش تعیین شوند. برای تخفیف راه‌اندازی was:'قیمت قبلی' اضافه کن
+  {id:'M',title:'ماهانه',price:'۴۹٬۰۰۰ تومان',days:30},
+  {id:'Q',title:'سه‌ماهه',price:'۱۲۹٬۰۰۰ تومان',days:90,badge:'پیشنهادی'},
+  {id:'Y',title:'سالانه',price:'۳۴۹٬۰۰۰ تومان',days:365,badge:'به‌صرفه‌ترین'},
+  {id:'L',title:'دائمی',price:'۵۹۹٬۰۰۰ تومان',days:null}
+ ]
+};
+const FEATURES=[
+ {id:'kids',ic:'🧒',t:'چند کودک',d:'برای هر فرزند یک پروفایل جدا با کارها و ستاره‌های خودش'},
+ {id:'packs',ic:'📦',t:'بسته‌های کار آماده',d:'مسئولیت‌پذیری، سلامت و ورزش، رمضان، تابستان و ...'},
+ {id:'report',ic:'📈',t:'گزارش ماهانه',d:'روند ۳۰ روز، روزهای فعال و بهترین روز'},
+ {id:'foxes',ic:'🦊',t:'روباه‌ها و استیکرهای بیشتر',d:'لباس، کلاه و ژست‌های تازه، آلبوم برچسب',soon:true},
+ {id:'cloud',ic:'☁️',t:'پشتیبان ابری و همگام‌سازی',d:'اطلاعات روی چند گوشی هماهنگ بماند',soon:true},
+ {id:'stories',ic:'📖',t:'داستان و جمله‌های ویژه',d:'داستان‌های کوتاه با روباه و بسته‌های جمله‌ی انگیزشی',soon:true}
+];
+const Billing={ // جای اتصال درگاه: بازار / مایکت / زرین‌پال (نگاه کنید PREMIUM_HANDOFF.md)
+ ready:false,
+ async purchase(planId){throw new Error('NOT_CONFIGURED')},
+ async restore(){return null}
+};
+function isPremium(){const p=META.plan;return !!(p&&p.tier==='premium'&&(!p.exp||p.exp>Date.now()))}
+function grantPlan(plan,src,ref){const base=isPremium()&&META.plan.exp?META.plan.exp:Date.now();
+ META.plan={tier:'premium',src,exp:plan.days?base+plan.days*864e5:null,ref:ref||null};saveMeta();closeM();toast('راوینو پلاس فعال شد ✨');render(true)}
+/* کد فعال‌سازی: RAV-<M|Q|Y|L><۳ حرف>-<۴ حرف کنترلی>؛ ساخت با tools/gen_codes.py
+   توجه: اعتبارسنجی سمت کاربر است و فقط برای فروش دستی/آزمایشی مناسب است. */
+function fnv(s){let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0}return h>>>0}
+function ckOf(t,r){return fnv(CFG.salt+t+r).toString(36).toUpperCase().padStart(4,'0').slice(-4)}
+function activateWithCode(raw){const c=String(raw||'').trim().toUpperCase().replace(/\s/g,'');
+ const m=/^RAV-([MQYL])([A-Z0-9]{3})-([A-Z0-9]{4})$/.exec(c);
+ if(!m||ckOf(m[1],m[2])!==m[3])return {ok:false,msg:'کد درست نیست'};
+ if(META.used.includes(c))return {ok:false,msg:'این کد قبلاً روی همین دستگاه استفاده شده'};
+ const plan=CFG.plans.find(p=>p.id===m[1]);META.used.push(c);grantPlan(plan,'code',c);return {ok:true}}
+function applyCode(){const r=activateWithCode((document.getElementById('pcode')||{}).value);if(!r.ok)toast(r.msg)}
+function devToggle(){META.plan=isPremium()?{tier:'free'}:{tier:'premium',src:'dev',exp:Date.now()+30*864e5};saveMeta();render(true)}
+function parentGate(cb){
+ if(META.pin)return askPin(cb);
+ const a=6+Math.floor(Math.random()*4),b=3+Math.floor(Math.random()*6);window._pg={cb,ans:a+b};
+ modal(`<h2 style="color:var(--navy)">فقط برای والدین</h2><p class="hint">برای ادامه جواب را بنویس: ${fa(a)} + ${fa(b)} = ؟</p><input id="pgi" inputmode="numeric"><div class="row"><button class="btn" onclick="pgCheck()">تأیید</button><button class="btn sec" onclick="closeM()">بستن</button></div>`)}
+function pgCheck(){const v=parseInt(document.getElementById('pgi').value.replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)),10);
+ if(v===window._pg.ans){closeM();window._pg.cb()}else toast('جواب درست نیست')}
+function setPlan(id){window._plan=id;openPaywall(window._pwFeat)}
+function openPaywall(feat){window._plan=window._plan||'Q';window._pwFeat=feat;
+ const fr=FEATURES.map(f=>`<div class="feat ${f.id===feat?'hl':''}"><span class="fi">${f.ic}</span><div class="fn"><b>${f.t}</b><div class="hint">${f.d}</div></div>${f.soon?'<span class="soon">به‌زودی</span>':'<span class="okk">✓</span>'}</div>`).join('');
+ const pl=CFG.plans.map(p=>`<button class="plan ${window._plan===p.id?'on':''}" onclick="setPlan('${p.id}')">${p.badge?`<em>${p.badge}</em>`:''}<b>${p.title}</b>${p.was?`<s>${p.was}</s>`:''}<span>${p.price}</span></button>`).join('');
+ modal(`<div class="pw"><div class="pwh">${img('m_cheer')}<div><h2 style="margin:0;color:var(--navy)">راوینو پلاس ✨</h2><div class="hint">امکانات بیشتر برای رشد بچه‌ها و خیال راحت خانواده</div></div></div>${fr}
+ ${isPremium()?`<p class="hint" style="text-align:center">پلاس فعال است${META.plan.exp?' تا '+jtxt(new Date(META.plan.exp)):''}.</p>`:`<div class="plans">${pl}</div><button class="btn g" style="width:100%" onclick="parentGate(startPurchase)">ادامه (فقط والدین)</button>${META.trialUsed?'':`<button class="btn sec" style="width:100%;margin-top:8px" onclick="parentGate(startTrial)">🎁 ${fa(CFG.trialDays)} روز رایگان امتحان کن</button>`}`}
+ <label style="margin-top:14px">کد فعال‌سازی دارید؟</label><div class="row"><input id="pcode" placeholder="RAV-XXXX-XXXX" dir="ltr" style="margin:0"><button class="btn sec fit" onclick="applyCode()">فعال‌سازی</button></div>
+ ${CFG.devMode?'<p class="hint">نسخه‌ی آزمایشی: قیمت‌ها و پرداخت آنلاین هنوز نمایشی‌اند.</p>':''}
+ <button class="btn sec" style="width:100%;margin-top:10px" onclick="closeM()">بستن</button></div>`)}
+async function startPurchase(){const plan=CFG.plans.find(p=>p.id===window._plan)||CFG.plans[0];
+ try{const r=await Billing.purchase(plan.id);grantPlan(plan,'billing',r)}
+ catch(e){toast(e&&e.message==='NOT_CONFIGURED'?'پرداخت آنلاین هنوز فعال نشده؛ اگر کد فعال‌سازی داری وارد کن.':'پرداخت انجام نشد');openPaywall(window._pwFeat)}}
+function startTrial(){if(META.trialUsed||isPremium())return;META.trialUsed=true;
+ META.plan={tier:'premium',src:'trial',exp:Date.now()+CFG.trialDays*864e5};saveMeta();closeM();toast('آزمایش رایگان '+fa(CFG.trialDays)+' روزه شروع شد ✨');render(true)}
+function openLegal(){modal(`<h2 style="color:var(--navy)">قوانین و حریم خصوصی</h2><div class="hint" style="font-size:14px">
+ <p><b>اطلاعات کودک:</b> کارها، ستاره‌ها و یادداشت‌ها فقط روی همین دستگاه ذخیره می‌شوند و برای ما فرستاده نمی‌شوند. گزارش هفته فقط وقتی ارسال می‌شود که خودتان دکمه‌ی ارسال را بزنید.</p>
+ <p><b>تبلیغات:</b> در راوینو هیچ تبلیغی نیست.</p>
+ <p><b>خرید:</b> خرید فقط با تأیید والدین انجام می‌شود. اشتراک‌ها و کدهای فعال‌سازی فقط برای امکانات راوینو پلاس هستند.</p>
+ <p><b>پشتیبان‌گیری:</b> اگر اطلاعات دستگاه پاک شود، بدون پشتیبان قابل بازگشت نیست؛ از تنظیمات پشتیبان بگیرید.</p>
+ ${CFG.support?`<p><b>پشتیبانی:</b> ${esc(CFG.support)}</p>`:''}</div><button class="btn sec" style="width:100%;margin-top:10px" onclick="closeM()">بستن</button>`)}
+function plusCard(){const p=isPremium();
+ return `<div class="card plusc"><h2><span class="tag">راوینو پلاس ✨</span></h2><p class="hint" style="margin-top:0">${p?'فعال است'+(META.plan.exp?' تا '+jtxt(new Date(META.plan.exp)):''):'نسخه‌ی رایگان'}</p>
+ <button class="btn" style="width:100%" onclick="openPaywall()">${p?'امکانات پلاس':'امکانات بیشتر و ارتقا'}</button>
+ ${CFG.devMode?`<button class="mini" style="margin-top:8px" onclick="devToggle()">آزمایشی: ${p?'غیرفعال کردن پلاس':'فعال کردن پلاس'}</button>`:''}</div>`}
+/* چند کودک */
+function kidsCard(){
+ return `<div class="card"><h2><span class="tag">کودکان</span></h2>${META.kids.map(k=>`<div class="rw"><div class="tic">🧒</div><div class="n">${esc(k.name||'کودک')}${k.id===META.active?'<div class="hint">انتخاب‌شده</div>':''}</div>${k.id===META.active?'':`<button class="mini" onclick="switchKid('${k.id}')">انتخاب</button>`}${META.kids.length>1?`<button class="mini" onclick="delKid('${k.id}')">حذف</button>`:''}</div>`).join('')}
+ <br><button class="btn sec" onclick="addKid()">${isPremium()||!META.kids.length?'':'🔒 '}+ کودک جدید</button></div>`}
+function openKids(){modal(`<h2 style="color:var(--navy)">کودکان</h2>${META.kids.map(k=>`<div class="rw"><div class="tic">🧒</div><div class="n">${esc(k.name||'کودک')}${k.id===META.active?'<div class="hint">انتخاب‌شده</div>':''}</div>${k.id===META.active?'':`<button class="btn" onclick="switchKid('${k.id}')">انتخاب</button>`}</div>`).join('')}<button class="btn sec" style="width:100%;margin-top:12px" onclick="closeM()">بستن</button>`)}
+function switchKid(id){META.active=id;saveMeta();load();openCat=null;closeM();render()}
+function addKid(){
+ if(!isPremium())return openPaywall('kids');
+ if(META.kids.length>=CFG.maxKids)return toast('حداکثر '+fa(CFG.maxKids)+' کودک');
+ modal(`<h2 style="color:var(--navy)">کودک جدید</h2><label>اسم کودک</label><input id="k_n" maxlength="20"><div class="row"><button class="btn" onclick="saveKid()">ذخیره</button><button class="btn sec" onclick="closeM()">بستن</button></div>`)}
+function saveKid(){const name=document.getElementById('k_n').value.trim();if(!name)return toast('اسم را بنویس');
+ const id='k'+Date.now().toString(36);META.kids.push({id,key:'ravino_v2_'+id,name});META.active=id;saveMeta();load();S.name=name;save();openCat=null;closeM();render()}
+function delKid(id){if(META.kids.length<2)return;const k=META.kids.find(x=>x.id===id);if(!k||!confirm('اطلاعات «'+(k.name||'کودک')+'» پاک شود؟ این کار برگشت ندارد.'))return;
+ try{localStorage.removeItem(k.key)}catch(e){}
+ META.kids=META.kids.filter(x=>x.id!==id);if(META.active===id)META.active=META.kids[0].id;saveMeta();load();openCat=null;render()}
+/* بسته‌های کار آماده */
+const PACKS=[
+ {id:'p_school',t:'اولین سال مدرسه',ic:'🎒',free:true,tasks:[['آماده کردن کیف برای فردا','school','🎒',1],['مرور درس ۱۰ دقیقه','school','📚',2],['نوشتن یک صفحه خوش‌خط','school','✏️',2],['تمیز کردن میز مطالعه','school','🧹',1]]},
+ {id:'p_resp',t:'مسئولیت‌پذیری',ic:'🌟',tasks:[['جمع کردن ظرف خودم بعد از غذا','home','🍽️',1],['شستن جوراب‌های خودم','self','🧺',2],['آب دادن به گیاه','home','🌱',1],['مرتب کردن کمد لباس','home','👕',2],['کمک به چیدن میز غذا','home','🤝',1]]},
+ {id:'p_health',t:'سلامت و ورزش',ic:'💪',tasks:[['خوردن ۸ لیوان آب','self','💧',1],['۱۵ دقیقه ورزش','choice','🏃',2],['خوردن میوه','self','🍎',1],['خوابیدن سر وقت','self','🌙',2],['مسواک شب','self','🪥',1]]},
+ {id:'p_ramadan',t:'ماه رمضان',ic:'🌙',tasks:[['خواندن یک دعا یا صفحه‌ای از قرآن','choice','🙏',2],['کمک به آماده کردن افطار','home','🍽️',2],['یک کار خوب برای همسایه','choice','💛',2],['صبر و مهربانی امروز','choice','⭐',1]]},
+ {id:'p_summer',t:'تابستان خلاق',ic:'☀️',tasks:[['نقاشی یا کاردستی','choice','🎨',2],['خواندن کتاب داستان','school','📖',2],['بازی در حیاط ۳۰ دقیقه','choice','⚽',2],['یاد گرفتن یک چیز تازه','school','🧩',2],['ساختن یک چیز با دست خودم','choice','✂️',2]]}
+];
+function packRows(){return PACKS.map(p=>{const have=p.tasks.every(x=>S.tasks.some(t=>t.title===x[0]));const lock=!p.free&&!isPremium();
+ return `<div class="rw"><div class="tic">${p.ic}</div><div class="n">${p.t}<div class="hint">${fa(p.tasks.length)} کار${p.free?' · رایگان':''}</div></div>${have?'<span class="soon" style="background:#d7f5e3;color:#1d8a4a">اضافه شده</span>':`<button class="mini" onclick="addPack('${p.id}')">${lock?'🔒 پلاس':'افزودن'}</button>`}</div>`}).join('')}
+function packsCard(){return `<div class="card"><h2><span class="tag">بسته‌های کار آماده</span></h2>${packRows()}</div>`}
+function openPacks(){modal(`<h2 style="color:var(--navy)">بسته‌های کار آماده</h2><p class="hint" style="margin-top:0">یک بسته را بزن تا کارهایش به لیست اضافه شود.</p>${packRows()}<button class="btn sec" style="width:100%;margin-top:12px" onclick="closeM()">بستن</button>`)}
+function addPack(id){const p=PACKS.find(x=>x.id===id);if(!p)return;
+ if(!p.free&&!isPremium())return openPaywall('packs');
+ let n=0;p.tasks.forEach(x=>{if(!S.tasks.some(t=>t.title===x[0])){S.tasks.push({id:uid(),title:x[0],cat:x[1],ic:x[2],stars:x[3]});n++}});
+ save();toast(n?fa(n)+' کار اضافه شد ✓':'همه‌ی کارهای این بسته از قبل هست');
+ if(document.querySelector('.modal'))openPacks();render(true)}
+/* گزارش ماهانه (پلاس) */
+function monthCard(){
+ const days=[];for(let i=29;i>=0;i--){const d=new Date(cur);d.setDate(d.getDate()-i);days.push(d)}
+ const tot=S.tasks.length||1;
+ const vals=days.map(d=>{const ds=doneSet(key(d));return S.tasks.filter(t=>ds.has(t.id)).length});
+ const sum=vals.reduce((a,b)=>a+b,0),act=vals.filter(v=>v>0).length,best=Math.max(...vals),bi=vals.indexOf(best);
+ const stars=days.reduce((a,d)=>a+dayStars(key(d)),0),pct=Math.round(sum/(tot*30)*100);
+ const bj=best>0?jp(days[bi]):null;
+ const body=`<div class="bars thin">${days.map((x,i)=>`<div><i style="height:${vals[i]/tot*100}px"></i></div>`).join('')}</div>
+ <div class="grid" style="margin-top:12px"><div class="stat"><b>${fa(pct)}٪</b>انجام کارها در ۳۰ روز</div><div class="stat"><b>${fa(act)}</b>روز فعال</div><div class="stat"><b>⭐ ${fa(stars)}</b>ستاره‌ی ماه</div><div class="stat"><b>${bj?fa(bj.d)+' '+JM[bj.m-1]:'—'}</b>بهترین روز</div></div>`;
+ if(isPremium())return `<div class="card"><h2><span class="tag">گزارش ماهانه ✨</span></h2>${body}</div>`;
+ return `<div class="card lockwrap"><h2><span class="tag">گزارش ماهانه 🔒</span></h2><div class="blur">${body}</div><div class="lockov"><button class="btn" onclick="openPaywall('report')">🔒 فقط در راوینو پلاس</button></div></div>`}
+
+/* ---------- مودال ---------- */
+function modal(h){document.getElementById('layer').innerHTML=`<div class="modal" onclick="if(event.target===this)closeM()"><div>${h}</div></div>`}
+function closeM(){document.getElementById('layer').innerHTML=''}
+function askPin(cb){window._pcb=cb;modal(`<h2 style="color:var(--navy)">رمز والدین</h2><input id="pin" inputmode="numeric" maxlength="4" type="password" placeholder="••••"><div class="row"><button class="btn" onclick="chkPin()">ورود</button><button class="btn sec" onclick="closeM()">بستن</button></div>`)}
+function chkPin(){if(document.getElementById('pin').value===META.pin){closeM();window._pcb()}else toast('رمز درست نیست')}
+
+render();
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
+</script>
+</body>
+</html>
